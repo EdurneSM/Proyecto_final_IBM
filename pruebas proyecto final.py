@@ -8,10 +8,10 @@
 ###############################################################################################
 # Defino la clase tarea, con nombre y estado
 class Tarea:
-    def __init__(self, posicion, nombreTarea, is_completa = False):
-        self.posicion = posicion
+    def __init__(self, nombreTarea, is_completa = False):
         self.nombreTarea = nombreTarea
         self.is_completa = is_completa
+        self.posicion = None
     
     def __str__(self):
         estado = "Completada" if self.is_completa else "Pendiente" 
@@ -23,18 +23,17 @@ class ListaTareas:
     def __init__(self):
         self.tareas = []
 
-    
-    def agregarTarea(self):
-        while True:
-            nombreTarea = input("Añade una nueva tarea a tu lista: ").strip()
-            if nombreTarea:
-                nuevaPosicion = len(self.tareas) + 1
-                nuevaTarea = Tarea(nuevaPosicion, nombreTarea)
-                self.tareas.append(nuevaTarea)
-                print(f"La nueva tarea se ha añadido correctamente a la lista")
-                break
-            else:
-                print("Has dejado el nombre de la tarea en blanco. Intenta escribir algo.")
+    def agregarTarea(self, nombreTarea):
+        nombreTarea = input("Añade una nueva tarea a tu lista: ").strip()
+        nuevaTarea = Tarea(nombreTarea)
+        self.tareas.append(nuevaTarea)
+        self.actualizarPosicion()
+        print(f"La nueva tarea se ha añadido correctamente a la lista")
+        # print("Has dejado el nombre de la tarea en blanco. Intenta escribir algo.")        Para la excepción
+        
+    def actualizarPosicion(self):
+        for i, tarea in enumerate(self.tareas, start = 1):
+            tarea.posicion = i
 
     def mostrarTareas(self):
         if not self.tareas:
@@ -43,7 +42,7 @@ class ListaTareas:
             for tarea in self.tareas:
                 print(tarea)
     
-    def cambiarEstado(self, posicion):
+    def estadoCompletada(self, posicion):
         if 0 < posicion <=len(self.tareas):
             self.tareas[posicion -1].is_completa = True
             print(f"Has marcado la tarea {posicion} como completada")
@@ -59,40 +58,61 @@ class ListaTareas:
 
 
 ######################################################################################################
-# Clase con el menú
-class Menu:
-    def __init__(self):
-        self.lista_tareas = ListaTareas()
+# # Clase con el menú
+# class Menu:
+#     def __init__(self):
+#         self.lista_tareas = ListaTareas()
         
-    def mostrarMenu (self):
-        while True:
-            print("=======================================================\n"
-                "¡¡¡BIENVENIDO A TU LISTA DE TAREAS PERSONALIZABLE!!!\n"
-                "\nEstas son todas las opciones que tienes:\n"
-                "\n[A] Agregar una tarea nueva\n"
-                "[C] Marcar una tarea como completada\n"
-                "[E] Eliminar una tarea de la lista\n"
-                "[M] Mostrar todas las tareas de mi lista\n"
-                "[S] Salir del menú\n"
-                "=======================================================")
-            eleccion = input("Por favor, selecciona una opción: ").strip().upper()
+#     def mostrarMenu (self):
+#         while True:
+#             print("=======================================================\n"
+#                 "¡¡¡BIENVENIDO A TU LISTA DE TAREAS PERSONALIZABLE!!!\n"
+#                 "\nEstas son todas las opciones que tienes:\n"
+#                 "\n[A] Agregar una tarea nueva\n"
+#                 "[C] Marcar una tarea como completada\n"
+#                 "[E] Eliminar una tarea de la lista\n"
+#                 "[M] Mostrar todas las tareas de mi lista\n"
+#                 "[S] Salir del menú\n"
+#                 "=======================================================")
+#             eleccion = input("Por favor, selecciona una opción: ").strip().upper()
             
-            if eleccion == "A":
-                self.lista_tareas.agregarTarea()
-            elif eleccion == "C":
-                pos = int(input("Indica el número de la tarea que quieres marcar como Completada: "))
-                self.lista_tareas.cambiarEstado()
-            elif eleccion == "E":
-                pos = int(input("Indica el número de la tarea que quieres eliminar de tu lista: "))
-                self.lista_tareas.eliminarTareas(pos)
-            elif eleccion =="M":
-                self.lista_tareas.mostrarTareas()
-            elif eleccion == "S":
-                print("¡Hasta la próxima!")
-                break
-            else:
-                print("La opción seleccionada no es válida. Por favor, indica qué quieres hacer")
+#             if eleccion == "A":
+#                 self.lista_tareas.agregarTarea()
+#             elif eleccion == "C":
+#                 pos = int(input("Indica el número de la tarea que quieres marcar como Completada: "))
+#                 self.lista_tareas.cambiarEstado()
+#             elif eleccion == "E":
+#                 pos = int(input("Indica el número de la tarea que quieres eliminar de tu lista: "))
+#                 self.lista_tareas.eliminarTareas(pos)
+#             elif eleccion =="M":
+#                 self.lista_tareas.mostrarTareas()
+#             elif eleccion == "S":
+#                 print("¡Hasta la próxima!")
+#                 break
+#             else:
+#                 print("La opción seleccionada no es válida. Por favor, indica qué quieres hacer")
 
-# Para probar las funciones 
-menu = Menu()
-menu.mostrarMenu()
+# # Para probar las funciones 
+# menu = Menu()
+# menu.mostrarMenu()
+##################################################################################################################
+
+# Ejemplo de uso:
+lista_tareas = ListaTareas()
+# lista_tareas.agregarTarea()  # Pedirá al usuario que introduzca el nombre de la tarea
+lista_tareas.agregarTarea("Hacer ejercicios")
+lista_tareas.agregarTarea("Leer documentación")
+
+# Marca la primera tarea como completada
+lista_tareas.estadoCompletada(1)
+
+# Muestra todas las tareas
+print("Todas las tareas:")
+lista_tareas.mostrarTareas()
+
+# Elimina la segunda tarea
+lista_tareas.eliminarTareas(1)
+
+# Muestra todas las tareas después de la eliminación
+print("\nTareas después de eliminar la segunda tarea:")
+lista_tareas.mostrarTareas()
