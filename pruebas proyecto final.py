@@ -23,12 +23,12 @@ class ListaTareas:
     def __init__(self):
         self.tareas = []
 
-    def agregarTarea(self, nombreTarea):
+    def agregarTarea(self):
         nombreTarea = input("Añade una nueva tarea a tu lista: ").strip()
         nuevaTarea = Tarea(nombreTarea)
         self.tareas.append(nuevaTarea)
         self.actualizarPosicion()
-        print(f"La nueva tarea se ha añadido correctamente a la lista")
+        print(f"La nueva tarea se ha añadido correctamente a tu lista")
         # print("Has dejado el nombre de la tarea en blanco. Intenta escribir algo.")        Para la excepción
         
     def actualizarPosicion(self):
@@ -52,67 +52,73 @@ class ListaTareas:
     def eliminarTareas(self, posicion):
         if 0 < posicion <=len(self.tareas):
             tareaEliminada = self.tareas.pop(posicion - 1)
+            self.actualizarPosicion()
             print(f"Has eliminado la tarea '{tareaEliminada.nombreTarea}'")
         else:
             print("El número que has introducido no es un número de tarea correcto")
 
 
 ######################################################################################################
-# # Clase con el menú
-# class Menu:
-#     def __init__(self):
-#         self.lista_tareas = ListaTareas()
+# Clase con el menú
+class Menu:
+    def __init__(self):
+        self.listaTareas = ListaTareas()
         
-#     def mostrarMenu (self):
-#         while True:
-#             print("=======================================================\n"
-#                 "¡¡¡BIENVENIDO A TU LISTA DE TAREAS PERSONALIZABLE!!!\n"
-#                 "\nEstas son todas las opciones que tienes:\n"
-#                 "\n[A] Agregar una tarea nueva\n"
-#                 "[C] Marcar una tarea como completada\n"
-#                 "[E] Eliminar una tarea de la lista\n"
-#                 "[M] Mostrar todas las tareas de mi lista\n"
-#                 "[S] Salir del menú\n"
-#                 "=======================================================")
-#             eleccion = input("Por favor, selecciona una opción: ").strip().upper()
+    def mostrarMenu (self):
+        while True:
+            print("=======================================================\n"
+                "¡¡¡BIENVENIDO A TU LISTA DE TAREAS PERSONALIZABLE!!!\n"
+                "\nEstas son todas las opciones que tienes:\n"
+                "\n[A] Agregar una tarea nueva\n"
+                "[C] Marcar una tarea como completada\n"
+                "[E] Eliminar una tarea de la lista\n"
+                "[M] Mostrar todas las tareas de mi lista\n"
+                "[S] Salir del menú\n"
+                "=======================================================")
+            eleccion = input("Por favor, selecciona una opción: ").strip().upper()
             
-#             if eleccion == "A":
-#                 self.lista_tareas.agregarTarea()
-#             elif eleccion == "C":
-#                 pos = int(input("Indica el número de la tarea que quieres marcar como Completada: "))
-#                 self.lista_tareas.cambiarEstado()
-#             elif eleccion == "E":
-#                 pos = int(input("Indica el número de la tarea que quieres eliminar de tu lista: "))
-#                 self.lista_tareas.eliminarTareas(pos)
-#             elif eleccion =="M":
-#                 self.lista_tareas.mostrarTareas()
-#             elif eleccion == "S":
-#                 print("¡Hasta la próxima!")
-#                 break
-#             else:
-#                 print("La opción seleccionada no es válida. Por favor, indica qué quieres hacer")
+            if eleccion == "A":
+                self.listaTareas.agregarTarea()
+            elif eleccion == "C":
+                try:
+                    pos = int(input("Indica el número de la tarea que quieres marcar como Completada: "))
+                    self.listaTareas.estadoCompletada(pos)
+                except ValueError:
+                    print("No hay ninguna tarea con ese número. Por favor, introduce un número de tarea válido")
+            elif eleccion == "E":
+                try:
+                    pos = int(input("Indica el número de la tarea que quieres eliminar de tu lista: "))
+                    self.listaTareas.eliminarTareas(pos)
+                except ValueError:
+                    print("No hay ninguna tarea con ese número. Por favor, introduce un número de tarea válido")
+            elif eleccion =="M":
+                self.listaTareas.mostrarTareas()
+            elif eleccion == "S":
+                print("¡Hasta la próxima!")
+                break
+            else:
+                print("La opción seleccionada no es válida. Por favor, indica qué quieres hacer")
 
-# # Para probar las funciones 
-# menu = Menu()
-# menu.mostrarMenu()
+# Para probar las funciones 
+menu = Menu()
+menu.mostrarMenu()
 ##################################################################################################################
 
-# Ejemplo de uso:
-lista_tareas = ListaTareas()
+# # Ejemplo de uso:
+# lista_tareas = ListaTareas()
 # lista_tareas.agregarTarea()  # Pedirá al usuario que introduzca el nombre de la tarea
-lista_tareas.agregarTarea("Hacer ejercicios")
-lista_tareas.agregarTarea("Leer documentación")
+# lista_tareas.agregarTarea()  # Pedirá al usuario que introduzca el nombre de otra tarea
 
-# Marca la primera tarea como completada
-lista_tareas.estadoCompletada(1)
+# # Marca la primera tarea como completada
+# lista_tareas.estadoCompletada(1)
 
-# Muestra todas las tareas
-print("Todas las tareas:")
-lista_tareas.mostrarTareas()
+# # Muestra todas las tareas
+# print("Todas las tareas:")
+# lista_tareas.mostrarTareas()
 
-# Elimina la segunda tarea
-lista_tareas.eliminarTareas(1)
+# # Elimina la primera tarea
+# lista_tareas.eliminarTareas(1)
 
-# Muestra todas las tareas después de la eliminación
-print("\nTareas después de eliminar la segunda tarea:")
-lista_tareas.mostrarTareas()
+# # Muestra todas las tareas después de la eliminación
+# print("\nTareas después de eliminar la primera tarea:")
+# lista_tareas.mostrarTareas()
