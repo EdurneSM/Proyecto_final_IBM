@@ -42,7 +42,9 @@ class ListaTareas:
         nuevaTarea = Tarea(nombreTarea)
         self.tareas.append(nuevaTarea)
         self.actualizarPosicion()
-        print(f"La nueva tarea se ha añadido correctamente a tu lista")
+        print(f"La nueva tarea se ha añadido correctamente a tu lista\n")
+        print(f"Esta es tu lista de tareas actualizada:")
+        self.mostrarTareas()
         # print("Has dejado el nombre de la tarea en blanco. Intenta escribir algo.")        Para la excepción
         
     def actualizarPosicion(self):
@@ -51,7 +53,7 @@ class ListaTareas:
 
     def mostrarTareas(self):
         if not self.tareas:
-            print("No hay tareas en tu lista")
+            print("Todavía no hay ninguna tarea en tu lista")
         else:
             for tarea in self.tareas:
                 print(tarea)
@@ -59,7 +61,9 @@ class ListaTareas:
     def estadoCompletada(self, posicion):
         if 0 < posicion <=len(self.tareas):
             self.tareas[posicion -1].is_completa = True
-            print(f"Has marcado la tarea {posicion} como completada")
+            print(f"Has marcado la tarea {posicion} como completada\n")
+            print(f"Esta es tu lista de tareas actualizada:")
+            self.mostrarTareas()
         else:
             print("El número de tarea que has introducido no es válido")
     
@@ -68,6 +72,8 @@ class ListaTareas:
             tareaEliminada = self.tareas.pop(posicion - 1)
             self.actualizarPosicion()
             print(f"Has eliminado la tarea '{tareaEliminada.nombreTarea}'")
+            print(f"Esta es tu lista de tareas actualizada:")
+            self.mostrarTareas()
         else:
             print("El número que has introducido no es un número de tarea correcto")
 
@@ -80,15 +86,15 @@ class Menu:
         
     def mostrarMenu (self):
         while True:
-            print("=======================================================\n"
+            print("\n=======================================================\n"
                 "¡¡¡BIENVENIDO A TU LISTA DE TAREAS PERSONALIZABLE!!!\n"
                 "\nEstas son todas las opciones que tienes:\n"
                 "\n[A] Agregar una tarea nueva\n"
                 "[C] Marcar una tarea como completada\n"
                 "[E] Eliminar una tarea de la lista\n"
-                "[M] Mostrar todas las tareas de mi lista\n"
+                "[M] Mostrar todas las tareas de la lista\n"
                 "[S] Salir del menú\n"
-                "=======================================================")
+                "=======================================================\n")
             eleccion = input("Por favor, selecciona una opción: ").strip().upper()
             
             if eleccion == "A":
