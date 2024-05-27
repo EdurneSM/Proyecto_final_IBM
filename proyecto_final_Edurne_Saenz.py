@@ -1,15 +1,15 @@
-################################################
-########## GESTOR DE TAREAS PENDIENTES #########
-########### Creado por: Edurne Sáenz ###########
-################################################
+################################################################
+################## GESTOR DE TAREAS PENDIENTES #################
+################### Creado por: Edurne Sáenz ###################
+################################################################
 
-################################################
+################################################################
 # TAREAS PERMITIDAS AL USUARIO:
 # - Agregar nueva tarea
 # - Marcar una tarea como completada
 # - Mostrar todas las tareas con su estado
 # - Eliminar tareas
-################################################
+#################################################################
 
 
 # Importar Colorama para dar estilo al programa
@@ -60,7 +60,7 @@ class ListaTareas:
         for i, tarea in enumerate(self.tareas, start = 1): # Hacemos que la lista empiece en 1 y no en 0
             tarea.posicion = i
 
-    # Declaración del método para mostrar las tareas de la lista (se verá el número de posición, nombre de la tarea y estado)
+    # Declaración del método para mostrar las tareas de la lista (se verá: posición, nombre de la tarea y estado)
     def mostrarTareas(self):
         if not self.tareas:
             print("No hay ninguna tarea en tu lista.")
@@ -70,23 +70,35 @@ class ListaTareas:
                 print(tarea)
 
     # Declaración del método para marcar una tarea como completada (el estado inicial es "pendiente")  
-    def estadoCompletada(self, posicion):
-        if 0 < posicion <=len(self.tareas):
-            self.tareas[posicion -1].is_completa = True
-            print(Fore.GREEN + f"✓ Has marcado la tarea {posicion} como completada.\n")
-            self.mostrarTareas()
-        else:
-            print(Fore.RED + "⚠ El número de tarea que has introducido no es válido.")
- 
+    def estadoCompletada(self):
+        while True:
+            try:
+                posicion = int(input("Indica el número de la tarea que quieres marcar como Completada: "))
+                if 0 < posicion <=len(self.tareas):
+                    self.tareas[posicion -1].is_completa = True
+                    print(Fore.GREEN + f"✓ Has marcado la tarea {posicion} como completada.\n")
+                    self.mostrarTareas()
+                    break
+                else:
+                    print(Fore.RED + "⚠ El número de tarea que has introducido no es válido.")
+            except ValueError:
+                print(Fore.RED + "⚠ El número de tarea que has introducido no es válido.")
+    
     # Declaración del método para eliminar tareas en la lista  
-    def eliminarTareas(self, posicion):
-        if 0 < posicion <=len(self.tareas):
-            tareaEliminada = self.tareas.pop(posicion - 1)
-            self.actualizarPosicion() # Reordena la numeración de la posición de las tareas en la lista
-            print(Fore.GREEN + f"✓ Has eliminado la tarea '{tareaEliminada.nombreTarea}'.")
-            self.mostrarTareas()
-        else:
-            print(Fore.RED + "⚠ El número que has introducido no es un número de tarea correcto.")
+    def eliminarTareas(self):
+        while True:
+            try:
+                posicion = int(input("Indica el número de la tarea que quieres eliminar de tu lista: ").strip())
+                if 0 < posicion <=len(self.tareas):
+                    tareaEliminada = self.tareas.pop(posicion - 1)
+                    self.actualizarPosicion() # Reordena la numeración de la posición de las tareas en la lista
+                    print(Fore.GREEN + f"✓ Has eliminado la tarea '{tareaEliminada.nombreTarea}'.")
+                    self.mostrarTareas()
+                    break
+                else:
+                    print(Fore.RED + "⚠ El número que has introducido no es un número de tarea correcto.")
+            except ValueError:
+                print(Fore.RED + "⚠ El número que has introducido no es un número de tarea correcto.")
 
 
 # Declaración de la clase Menú, que permite al usuario interactuar con el programa
@@ -120,31 +132,28 @@ Estas son todas las opciones que tienes:
             if eleccion == "A":
                 self.listaTareas.agregarTarea()
             elif eleccion == "C":
-                try: #Excepción en caso de que el usuario introduzca un número no presente en la lista de tareas
-                    pos = int(input("Indica el número de la tarea que quieres marcar como Completada: "))
-                    self.listaTareas.estadoCompletada(pos)
-                except ValueError:
-                    print(Fore.RED + "⚠ No hay ninguna tarea con ese número. Por favor, introduce un número de tarea válido.")
+                self.listaTareas.estadoCompletada()
             elif eleccion == "E":
-                try: #Excepción en caso de que el usuario introduzca un número no presente en la lista de tareas
-                    pos = int(input("Indica el número de la tarea que quieres eliminar de tu lista: "))
-                    self.listaTareas.eliminarTareas(pos)
-                except ValueError:
-                    print(Fore.RED + "⚠ No hay ninguna tarea con ese número. Por favor, introduce un número de tarea válido.")
+                self.listaTareas.eliminarTareas()
             elif eleccion =="M":
                 self.listaTareas.mostrarTareas()
-            elif eleccion == "S":
+            elif eleccion == "S": 
                 print("¡Hasta la próxima! 😃")
                 break
             else:
                 print(Fore.RED + "⚠ La opción seleccionada no es válida. Por favor, indica qué quieres hacer.")
+                # No se incluye la opción "Salir del menú" con los métodos de ListaTareas por ser 
+                # una función propia del menú y no implicar cambios en las tareas en sí mismas
+
+    def ejecutarMenu(self):
+        while True:
+            self.mostrarMenu()
+            reiniciar = input("¿Quieres volver a iniciar el programa? (s/n): ").strip().lower()
+            if reiniciar != 's':
+                print("¡Nos vemos en otra ocasión! 😃")
+                break
 
 # Declaración de una instancia de la clase Menú
 if __name__ == "__main__": # Incluido para permitir que el código se ejecute si se importa en otro script
-    while True: # Bucle que permite reiniciar el menú después de elegir Salir
-        menu = Menu()
-        menu.mostrarMenu()
-        reiniciar = input("¿Quieres volver a iniciar el programa? (s/n): ").strip().lower()
-        if reiniciar != 's':
-            print("¡Nos vemos en otra ocasión! 😃")
-            break
+    menu = Menu()
+    menu.ejecutarMenu()
